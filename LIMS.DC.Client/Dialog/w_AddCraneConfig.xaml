@@ -1,0 +1,35 @@
+﻿<mah:MetroWindow x:Class="LIMS.DC.Client.Dialog.w_AddCraneConfig"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LIMS.DC.Client.Dialog"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" Name="control" Loaded="control_Loaded"
+        Title="添加天车配置" Height="200" Width="1024">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">服务器</TextBlock>
+        <ComboBox Name="cmb_Server" Grid.Column="1" DisplayMemberPath="NAME" VerticalContentAlignment="Center" VerticalAlignment="Center"></ComboBox>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">天车</TextBlock>
+        <ComboBox Name="cmb_Crane" Grid.Column="3" DisplayMemberPath="CRA_NAME" VerticalContentAlignment="Center" VerticalAlignment="Center"></ComboBox>
+        <TextBlock Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">连接名</TextBlock>
+        <TextBox Name="txt_Conn" Grid.Column="5" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="6" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button  VerticalAlignment="Center" Width="60" Margin="0,0,10,0" Click="btn_OK_Click">确定</Button>
+            <Button  VerticalAlignment="Center" Width="60" Click="btn_Cancel_Click">取消</Button>
+        </StackPanel>
+    </Grid>
+</mah:MetroWindow>

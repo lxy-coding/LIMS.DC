@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="LIMS.DC.Client.Control.u_Config"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LIMS.DC.Client.Control"
+             mc:Ignorable="d" Name="control"
+             d:DesignHeight="800" d:DesignWidth="1024">
+    <GroupBox Header="数据信息">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">编号</TextBlock>
+            <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding Config.NUM,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">名称</TextBlock>
+            <TextBox Grid.Column="3" IsReadOnly="True" Text="{Binding Config.NAME,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+            <TextBlock Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">内存地址</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True"  Text="{Binding Config.MEMORY_ADDRESS,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">订阅</TextBlock>
+            <CheckBox Grid.Row="1" Grid.Column="3" IsEnabled="False" IsChecked="{Binding Config.SUBSCRIPTION,ElementName=control}"></CheckBox>
+
+            <TextBlock Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">描述</TextBlock>
+            <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.DESCRIPTION,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="2" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Center">启用</TextBlock>
+            <CheckBox Grid.Row="2" Grid.Column="3" IsEnabled="False" IsChecked="{Binding Config.ENABLE,ElementName=control}"></CheckBox>
+
+            <TextBlock Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">表用户</TextBlock>
+            <TextBox Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.TABLE_USER,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">表名</TextBlock>
+            <TextBox Grid.Row="3" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.TABLE_NAME,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+            <TextBlock Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">表用户</TextBlock>
+            <TextBox Grid.Row="3" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.TABLE_USER,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">表名</TextBlock>
+            <TextBox Grid.Row="3" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.TABLE_NAME,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+            <TextBlock Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center">主键值</TextBlock>
+            <TextBox Grid.Row="4" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.IDENTITY_VALUE,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">字段名</TextBlock>
+            <TextBox Grid.Row="4" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.FIELD_NAME,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+            <TextBlock Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center">数据类型</TextBlock>
+            <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_TYPE,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">字段长度</TextBlock>
+            <TextBox Grid.Row="5" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_LENGTH,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+            <TextBlock Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Center">字段精度</TextBlock>
+            <TextBox Grid.Row="6" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_PRECISION,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+            <TextBlock Grid.Row="6" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0">字段比例</TextBlock>
+            <TextBox Grid.Row="6" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_SCALE,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+            <TextBlock Grid.Row="7" HorizontalAlignment="Right" VerticalAlignment="Center">转换</TextBlock>
+            <TextBox Grid.Row="7" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.CONVERTER,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+        </Grid>
+    </GroupBox>
+</UserControl>

@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="LIMS.DC.Client.Control.u_DataConfig"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:model="clr-namespace:LIMS.DC.Model;assembly=LIMS.DC.Model"
+             xmlns:local="clr-namespace:LIMS.DC.Client.Control"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" Loaded="control_Loaded" Name="control"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type model:DC_SERVER}" ItemsSource="{Binding Devices}">
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="/LIMS.DC.Client;component/Image/计算机.png" Width="16" Height="16"></Image>
+                <TextBlock Text="{Binding NAME}" Margin="5,0,0,0"/>
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="click_Modify_Server" Header="编辑" Icon="" Tag="{Binding}"></MenuItem>
+                        <MenuItem Click="click_Del_Server" Header="删除" Icon="" Tag="{Binding}"></MenuItem>
+                        <Separator></Separator>
+                        <MenuItem Click="click_Add_Device" Header="添加PLC" Icon="" Tag="{Binding}"></MenuItem>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type model:DC_DEVICE}" ItemsSource="{Binding Configs}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/LIMS.DC.Client;component/Image/plc.png" Width="16" Height="16"></Image>
+                <TextBlock Text="{Binding NAME}" Margin="5,0,0,0"/>
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="click_Modify_Device" Header="编辑" Icon="" Tag="{Binding}"></MenuItem>
+                    <MenuItem Click="click_Del_Device" Header="删除" Icon="" Tag="{Binding}"></MenuItem>
+                    <Separator></Separator>
+                    <MenuItem Click="click_Add_Config" Header="添加数据项" Icon="" Tag="{Binding}"></MenuItem>
+                </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type model:DC_DATA_CONFIG}">
+            <StackPanel Orientation="Horizontal" >
+                <Image Source="/LIMS.DC.Client;component/Image/数据.png" Width="16" Height="16"></Image>
+                <TextBlock Text="{Binding NAME}" Margin="5,0,0,0"/>
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Click="click_Modify_Config" Header="编辑" Icon="" Tag="{Binding}"></MenuItem>
+                        <MenuItem Click="click_Del_Config" Header="删除" Icon="" Tag="{Binding}"></MenuItem>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="Gray" BorderThickness="1">
+            <StackPanel Orientation="Horizontal">
+                <ToolBarPanel>
+                    <ToolBar Background="#FFEEEEF2">
+                        <Button ToolTip="添加服务器" Padding="0" Click="btn_Add_Server" Margin="5,0">
+                                <Image Source="/LIMS.DC.Client;component/Image/添加.png" Width="20" Height="20"/>
+                        </Button>
+                        <Button ToolTip="刷新" Padding="0" Click="btn_Reflesh" Margin="5,0">
+                            <Image Source="/LIMS.DC.Client;component/Image/刷新.png" Width="20" Height="20"/>
+                        </Button>
+                        <Button ToolTip="添加天车配置" Padding="0" Click="btn_Add_Crane" Margin="5,0">
+                            <Image Source="/LIMS.DC.Client;component/Image/添加天车.png" Width="20" Height="20"/>
+                        </Button>
+                    </ToolBar>
+                </ToolBarPanel>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="100" Width="250"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition MinWidth="150"/>
+            </Grid.ColumnDefinitions>
+            <TreeView ItemsSource="{Binding Servers,ElementName=control}" Name="tv_Main" SelectedItemChanged="tv_Main_SelectedItemChanged">
+               
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Width="3"></GridSplitter>
+
+            <ContentControl Name="cc_Main" Grid.Column="2" Content="{Binding Detail,ElementName=control}"></ContentControl>
+        </Grid>
+    </Grid>
+</UserControl>

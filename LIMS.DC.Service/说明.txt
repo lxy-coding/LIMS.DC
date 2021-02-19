@@ -1,0 +1,17 @@
+﻿天车动作编号
+ACTION_X			X轴坐标
+ACTION_Y			Y轴坐标
+ACTION_LITTLE_Y		副Y轴坐标
+ACTION_Z			Z轴坐标
+ACTION_LITTLE_Z		副Z轴坐标
+ACTION_WEIGHT		主钩重量
+ACTION_LITTLE_WEIGHT副钩重量
+ACTION_SYMBOL       动作类型
+ACTION_OBJ_COUNT	吊物数量
+ACTION_CACHE_NUM	缓存序号
+ACTION_READED_NUM	已读序号
+ACTION_TIME		    动作时间
+
+天车时间校正编号
+CAL_TIME			校正时间
+CAL_WRITE_FLAG		写入标志

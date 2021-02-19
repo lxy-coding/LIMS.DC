@@ -1,0 +1,71 @@
+﻿<mah:MetroWindow x:Class="LIMS.DC.Client.Dialog.w_Config"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LIMS.DC.Client.Dialog"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" Name="control" Loaded="control_Loaded"
+        Title="添加PLC" Height="500" Width="1024">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">编号：</TextBlock>
+        <TextBox Grid.Column="1" Text="{Binding Config.NUM,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20,0,0,0">名称：</TextBlock>
+        <TextBox Grid.Column="3" Text="{Binding Config.NAME,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+        <TextBlock Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">内存地址：</TextBlock>
+        <TextBox Grid.Row="1" Grid.Column="1"  Text="{Binding Config.MEMORY_ADDRESS,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20,0,0,0">订阅：</TextBlock>
+        <CheckBox Grid.Row="1" Grid.Column="3"  IsChecked="{Binding Config.SUBSCRIPTION,ElementName=control}"></CheckBox>
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">描述：</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Config.DESCRIPTION,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Center">启用：</TextBlock>
+        <CheckBox Grid.Row="2" Grid.Column="3" IsChecked="{Binding Config.ENABLE,ElementName=control}"></CheckBox>
+
+        <TextBlock Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">表用户：</TextBlock>
+        <ComboBox Grid.Row="3" Grid.Column="1" SelectedValue="{Binding Config.TABLE_USER,ElementName=control}" ItemsSource="{Binding Users,ElementName=control}" DisplayMemberPath="USERNAME" SelectedValuePath="USERNAME" SelectionChanged="User_SelectionChanged" VerticalContentAlignment="Center" VerticalAlignment="Center"></ComboBox>
+        <TextBlock Grid.Row="3" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Center">表名：</TextBlock>
+        <ComboBox Grid.Row="3" Grid.Column="3" SelectedValue="{Binding Config.TABLE_NAME,ElementName=control}" ItemsSource="{Binding Tables,ElementName=control}" DisplayMemberPath="TABLE_NAME" SelectedValuePath="TABLE_NAME" SelectionChanged="Table_SelectionChanged" VerticalContentAlignment="Center" VerticalAlignment="Center"></ComboBox>
+
+        <TextBlock Grid.Row="4" HorizontalAlignment="Right"  VerticalAlignment="Center">ID：</TextBlock>
+        <ComboBox Grid.Row="4" Grid.Column="1" SelectedValue="{Binding Config.IDENTITY_VALUE,ElementName=control}" ItemsSource="{Binding IDs,ElementName=control}" DisplayMemberPath="ID" SelectedValuePath="ID" VerticalContentAlignment="Center" VerticalAlignment="Center"></ComboBox>
+        <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">字段：</TextBlock>
+        <ComboBox Grid.Row="4" Grid.Column="3" SelectedValue="{Binding Config.FIELD_NAME,ElementName=control}"  ItemsSource="{Binding Columns,ElementName=control}" DisplayMemberPath="COLUMN_NAME" SelectedValuePath="COLUMN_NAME" SelectionChanged="Column_SelectionChanged" VerticalContentAlignment="Center" VerticalAlignment="Center"></ComboBox>
+      
+        <TextBlock Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center">数据类型：</TextBlock>
+        <TextBox Grid.Row="5" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_TYPE,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <TextBlock Grid.Row="5" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Center">数据长度：</TextBlock>
+        <TextBox Grid.Row="5" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_LENGTH,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+        <TextBlock Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Center">字段精度：</TextBlock>
+        <TextBox Grid.Row="6" Grid.Column="1" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_PRECISION,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+        <TextBlock Grid.Row="6" HorizontalAlignment="Right" Grid.Column="2" VerticalAlignment="Center" Margin="20,0,0,0">小数位数：</TextBlock>
+        <TextBox Grid.Row="6" Grid.Column="3" IsReadOnly="True" Text="{Binding Config.FIELD_DATA_SCALE,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+        <TextBlock Grid.Row="7" HorizontalAlignment="Right" VerticalAlignment="Center">转换：</TextBlock>
+        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Config.CONVERTER,ElementName=control}" VerticalContentAlignment="Center" VerticalAlignment="Center"></TextBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button  VerticalAlignment="Center" Width="60" Margin="0,0,10,0" Click="btn_OK_Click">确定</Button>
+            <Button  VerticalAlignment="Center" Width="60" Click="btn_Cancel_Click">取消</Button>
+        </StackPanel>
+    </Grid>
+</mah:MetroWindow>
