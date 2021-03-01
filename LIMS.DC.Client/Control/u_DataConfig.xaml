@@ -30,10 +30,11 @@
                 <StackPanel.ContextMenu>
                     <ContextMenu>
                         <MenuItem Click="click_Modify_Device" Header="编辑" Icon="" Tag="{Binding}"></MenuItem>
-                    <MenuItem Click="click_Del_Device" Header="删除" Icon="" Tag="{Binding}"></MenuItem>
-                    <Separator></Separator>
-                    <MenuItem Click="click_Add_Config" Header="添加数据项" Icon="" Tag="{Binding}"></MenuItem>
-                </ContextMenu>
+                        <MenuItem Click="click_Copy_Device" Header="复制" Icon="" Tag="{Binding}"></MenuItem>
+                        <MenuItem Click="click_Del_Device" Header="删除" Icon="" Tag="{Binding}"></MenuItem>
+                        <Separator></Separator>
+                        <MenuItem Click="click_Add_Config" Header="添加数据项" Icon="" Tag="{Binding}"></MenuItem>
+                    </ContextMenu>
                 </StackPanel.ContextMenu>
             </StackPanel>
         </HierarchicalDataTemplate>
@@ -44,6 +45,7 @@
                 <StackPanel.ContextMenu>
                     <ContextMenu>
                         <MenuItem Click="click_Modify_Config" Header="编辑" Icon="" Tag="{Binding}"></MenuItem>
+                        <MenuItem Click="click_Copy_Config" Header="复制" Icon="" Tag="{Binding}"></MenuItem>
                         <MenuItem Click="click_Del_Config" Header="删除" Icon="" Tag="{Binding}"></MenuItem>
                     </ContextMenu>
                 </StackPanel.ContextMenu>
@@ -60,7 +62,7 @@
                 <ToolBarPanel>
                     <ToolBar Background="#FFEEEEF2">
                         <Button ToolTip="添加服务器" Padding="0" Click="btn_Add_Server" Margin="5,0">
-                                <Image Source="/LIMS.DC.Client;component/Image/添加.png" Width="20" Height="20"/>
+                            <Image Source="/LIMS.DC.Client;component/Image/添加.png" Width="20" Height="20"/>
                         </Button>
                         <Button ToolTip="刷新" Padding="0" Click="btn_Reflesh" Margin="5,0">
                             <Image Source="/LIMS.DC.Client;component/Image/刷新.png" Width="20" Height="20"/>
@@ -79,7 +81,7 @@
                 <ColumnDefinition MinWidth="150"/>
             </Grid.ColumnDefinitions>
             <TreeView ItemsSource="{Binding Servers,ElementName=control}" Name="tv_Main" SelectedItemChanged="tv_Main_SelectedItemChanged">
-               
+
             </TreeView>
 
             <GridSplitter Grid.Column="1" Width="3"></GridSplitter>

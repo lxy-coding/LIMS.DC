@@ -176,6 +176,58 @@ namespace LIMS.DC.Client.Control
             }
         }
         /// <summary>
+        /// 复制plc
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void click_Copy_Device(object sender, RoutedEventArgs e)
+        {
+            DC_DEVICE device = (DC_DEVICE)(sender as FrameworkElement).Tag;
+            DC_DEVICE copyDev = new DC_DEVICE() { 
+                CHANNEL= device.CHANNEL,
+                CRA_ID= device.CRA_ID,
+                DESCRIPTION= device.DESCRIPTION,
+                ENABLE= device.ENABLE,
+                IP_ADDRESS= device.IP_ADDRESS,
+                MAC_ADDRESS= device.MAC_ADDRESS,
+                S7CONNECTION= device.S7CONNECTION,
+                NAME= device.NAME,
+                NUM= device.NUM,
+                SERVER_ID= device.SERVER_ID,
+                Configs= new ObservableCollection<DC_DATA_CONFIG>()
+            };
+           
+            dC_Service.InsertDCDevice(copyDev);
+            DC_SERVER server = Servers.First(s => s.Devices.Contains(device));
+            server.Devices.Add(copyDev);
+            foreach (var config in device.Configs)
+            {
+                DC_DATA_CONFIG copyConfig = new DC_DATA_CONFIG()
+                {
+                    IDENTITY_COLUMN = config.IDENTITY_COLUMN,
+                    CONVERTER = config.CONVERTER,
+                    DESCRIPTION = config.DESCRIPTION,
+                    DEVICE_ID = copyDev.ID,
+                    ENABLE = config.ENABLE,
+                    FIELD_DATA_LENGTH = config.FIELD_DATA_LENGTH,
+                    FIELD_DATA_PRECISION = config.FIELD_DATA_PRECISION,
+                    FIELD_DATA_SCALE = config.FIELD_DATA_SCALE,
+                    FIELD_DATA_TYPE = config.FIELD_DATA_TYPE,
+                    MEMORY_ADDRESS = config.MEMORY_ADDRESS,
+                    TABLE_NAME = config.TABLE_NAME,
+                    SUBSCRIPTION = config.SUBSCRIPTION,
+                    TABLE_USER = config.TABLE_USER,
+                    NAME = config.NAME,
+                    NUM = config.NUM,
+                    FIELD_NAME = config.FIELD_NAME,
+                    IDENTITY_VALUE = config.IDENTITY_VALUE,
+                };
+                dC_Service.InsertDataConfig(copyConfig);
+                dC_Service.InsertRealData(copyConfig.ID);
+                copyDev.Configs.Add(copyConfig);
+            }
+        }
+        /// <summary>
         /// 删除plc
         /// </summary>
         /// <param name="sender"></param>
@@ -227,6 +279,39 @@ namespace LIMS.DC.Client.Control
             }
         }
         /// <summary>
+        /// 复制项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void click_Copy_Config(object sender, RoutedEventArgs e)
+        {
+            DC_DATA_CONFIG config = (DC_DATA_CONFIG)(sender as FrameworkElement).Tag;
+            DC_DATA_CONFIG copyConfig = new DC_DATA_CONFIG() {
+                IDENTITY_COLUMN = config.IDENTITY_COLUMN,
+                CONVERTER = config.CONVERTER,
+                DESCRIPTION = config.DESCRIPTION,
+                DEVICE_ID = config.DEVICE_ID,
+                ENABLE = config.ENABLE,
+                FIELD_DATA_LENGTH = config.FIELD_DATA_LENGTH,
+                FIELD_DATA_PRECISION = config.FIELD_DATA_PRECISION,
+                FIELD_DATA_SCALE = config.FIELD_DATA_SCALE,
+                FIELD_DATA_TYPE = config.FIELD_DATA_TYPE,
+                MEMORY_ADDRESS = config.MEMORY_ADDRESS,
+                TABLE_NAME = config.TABLE_NAME,
+                SUBSCRIPTION = config.SUBSCRIPTION,
+                TABLE_USER = config.TABLE_USER,
+                NAME = config.NAME,
+                NUM = config.NUM,
+                FIELD_NAME = config.FIELD_NAME,
+                IDENTITY_VALUE = config.IDENTITY_VALUE,
+            };
+            dC_Service.InsertDataConfig(copyConfig);
+            dC_Service.InsertRealData(copyConfig.ID);
+            DC_SERVER server = Servers.First(s => s.Devices.FirstOrDefault(p => p.ID == config.DEVICE_ID) != null);
+            DC_DEVICE device = server.Devices.First(s => s.ID == config.DEVICE_ID);
+            device.Configs.Add(copyConfig);
+        }
+        /// <summary>
         /// 删除项
         /// </summary>
         /// <param name="sender"></param>
@@ -274,5 +359,6 @@ namespace LIMS.DC.Client.Control
             };
             window.Show();
         }
+
     }
 }
