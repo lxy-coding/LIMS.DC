@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LIMS.DC.Client.Dialog"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" Name="control" Loaded="control_Loaded"
-        Title="添加PLC" Height="500" Width="1024">
+        Title="数据项" Height="500" Width="1024">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
