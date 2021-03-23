@@ -1,4 +1,5 @@
-﻿using LIMS.DC.DAL.Helper;
+﻿using LIMS.DC.Common.LOG;
+using LIMS.DC.DAL.Helper;
 using LIMS.DC.Model;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
@@ -433,7 +434,7 @@ UPDATED={updated} WHERE DATA_CONFIG_ID={dataID}";
         /// <returns></returns>
         public int UpdateRealDataFlag(List<int> ids)
         {
-            string sql = $@"UPDATE DC.DC_REAL_DATA SET UPDATED=0 WHERE ID IN ({string.Join(",",ids)})";
+            string sql = $@"UPDATE DC.DC_REAL_DATA SET UPDATED=0, READ_TIME={GetDateTimeStr(DateTime.Now)} WHERE ID IN ({string.Join(",",ids)})";
             return OracleDataHelper.ExecuteNonQuery(sql);
         }
 
@@ -466,7 +467,7 @@ UPDATED)VALUES(
 
             datas = ConvertValue(datas);//转换值
 
-            datas = datas.Where(s => ValidateValueRange(s.Key, s.Value));//校验范围
+            datas = datas.Where(s => ValidateValueRange(s.Key.FIELD_DATA_TYPE,s.Key.FIELD_DATA_PRECISION??0,s.Key.FIELD_DATA_SCALE??0,s.Key.FIELD_DATA_LENGTH??0, s.Value.VALUE));//校验范围
 
             if(datas.Count()!=0)
             {
@@ -545,35 +546,56 @@ UPDATED)VALUES(
             return value;
         }
 
+        private object ParseValue(object value,DataRow row)
+        {
+            string dataType = row["DATA_TYPE"].ToString();
+            string type = dataType.Trim().ToLower();
+            if (type == "date")
+            {
+                DateTime dt = ByteArray2DateTime((byte[])value);
+                return dt;
+            }
+            return value;
+        }
+
         /// <summary>
         /// 校验范围
         /// </summary>
         /// <param name="config"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        private bool ValidateValueRange(DC_DATA_CONFIG config, DC_REAL_DATA data)
+        private bool ValidateValueRange(string FIELD_DATA_TYPE,int FIELD_DATA_PRECISION,int FIELD_DATA_SCALE,int FIELD_DATA_LENGTH,string data)
         {
-            string type = config.FIELD_DATA_TYPE.ToUpper();
+            string type = FIELD_DATA_TYPE.ToUpper();
             switch (type)
             {
                 case "NUMBER":
-                    double nValue = Convert.ToDouble(data.VALUE);
-                    double max = Math.Pow(10, (double)(config.FIELD_DATA_PRECISION - config.FIELD_DATA_SCALE));
-                    double min = -Math.Pow(10, (double)(config.FIELD_DATA_PRECISION - config.FIELD_DATA_SCALE));
+                    double nValue = Convert.ToDouble(data);
+                    double max = Math.Pow(10, (double)(FIELD_DATA_PRECISION - FIELD_DATA_SCALE));
+                    double min = -Math.Pow(10, (double)(FIELD_DATA_PRECISION - FIELD_DATA_SCALE));
                     if (nValue < max && nValue > min)
                     {
                         return true;
                     }
                     break;
                 case "VARCHAR2":
-                    string strValue = data.VALUE.ToString();
-                    if (strValue.Length < config.FIELD_DATA_LENGTH + 1)
+                    string strValue = data.ToString();
+                    if (strValue.Length < FIELD_DATA_LENGTH + 1)
                     {
                         return true;
                     }
                     break;
             }
             return false;
+        }
+
+        private bool ValidateValueRange(DataRow row,string data)
+        {
+            string dataType = row["DATA_TYPE"].ToString();
+            int precision = row["DATA_PRECISION"] == DBNull.Value ? 0 : Convert.ToInt32(row["DATA_PRECISION"]);
+            int scale = row["DATA_SCALE"] == DBNull.Value ? 0 : Convert.ToInt32(row["DATA_SCALE"]);
+            int length = row["DATA_LENGTH"] == DBNull.Value ? 0 : Convert.ToInt32(row["DATA_LENGTH"]);
+            return ValidateValueRange(dataType, precision, scale, length, data);
         }
 
         /// <summary>
@@ -597,7 +619,81 @@ UPDATED)VALUES(
         }
         #endregion
 
+        #region DC_WRITE_DATA
+
+        /// <summary>
+        /// 查询 DC_WRITE_DATA
+        /// </summary>
+        /// <returns></returns>
+        public List<DC_WRITE_DATA> GetWriteDatas()
+        {
+            string sql = $@"SELECT * FROM DC.DC_WRITE_DATA";
+            OracleDataReader reader = OracleDataHelper.ExecuteReader(sql);
+            List<DC_WRITE_DATA> lst = new List<DC_WRITE_DATA>();
+            while (reader.Read())
+            {
+                DC_WRITE_DATA data = new DC_WRITE_DATA()
+                {
+                    ID = Convert.ToInt32(reader["ID"]),
+                    DATA_CONFIG_ID = GetValue(reader, "DATA_CONFIG_ID"),
+                    VALUE = GetValue(reader, "VALUE"),
+                    UPDATED = GetValue(reader, "UPDATED"),
+                    WRITE_TIME = GetValue(reader, "WRITE_TIME"),
+                    UPDATE_TIME = GetValue(reader, "UPDATE_TIME"),
+                    FIELD1 = reader["FIELD1"].ToString(),
+                    FIELD2 = reader["FIELD2"].ToString(),
+                    FIELD3 = reader["FIELD3"].ToString(),
+                };
+                lst.Add(data);
+            }
+            reader.Close();
+            return lst;
+        }
+        /// <summary>
+        /// 查询 DC_WRITE_DATA
+        /// </summary>
+        /// <returns></returns>
+        public List<DC_WRITE_DATA> GetWriteDatasUpdated()
+        {
+            string sql = $@"SELECT * FROM DC.DC_WRITE_DATA WHERE UPDATED=1";
+            OracleDataReader reader = OracleDataHelper.ExecuteReader(sql);
+            List<DC_WRITE_DATA> lst = new List<DC_WRITE_DATA>();
+            while (reader.Read())
+            {
+                DC_WRITE_DATA data = new DC_WRITE_DATA()
+                {
+                    ID = Convert.ToInt32(reader["ID"]),
+                    DATA_CONFIG_ID = GetValue(reader, "DATA_CONFIG_ID"),
+                    VALUE = GetValue(reader, "VALUE"),
+                    UPDATED = GetValue(reader, "UPDATED"),
+                    WRITE_TIME = GetValue(reader, "WRITE_TIME"),
+                    UPDATE_TIME = GetValue(reader, "UPDATE_TIME"),
+                    FIELD1 = reader["FIELD1"].ToString(),
+                    FIELD2 = reader["FIELD2"].ToString(),
+                    FIELD3 = reader["FIELD3"].ToString(),
+                };
+                lst.Add(data);
+            }
+            reader.Close();
+            return lst;
+        }
+
+        /// <summary>
+        /// 更新 DC_WRITE_DATA 标志
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public int UpdateWriteDataFlag(int id)
+        {
+            string sql = $@"UPDATE DC.DC_WRITE_DATA SET UPDATED=0, WRITE_TIME={GetDateTimeStr(DateTime.Now)} WHERE ID = '{id}'";
+            return OracleDataHelper.ExecuteNonQuery(sql);
+        }
+        #endregion
+
         #region 天车动作
+
+        private List<DataRow> CraneActionColumns=null;
+
         /// <summary>
         /// 插入动作
         /// </summary>
@@ -615,6 +711,44 @@ UPDATED)VALUES(
         /// <returns></returns>
         public int InsertAction(int craID,object time,object x,object y,object l_y,object z,object l_z,object wgt,object l_wgt,object symbol,object count,object cNum)
         {
+            if(CraneActionColumns==null)
+            {
+                CraneActionColumns = GetColumns("CRANE_ACTION_RECORD").Rows.Cast<DataRow>().ToList();
+            }
+
+            DataRow timerow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "OPERATION_TIME");
+            DataRow xrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "COORD_X");
+            DataRow yrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "COORD_Y");
+            DataRow l_yrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "LIITLT_HOOK_Y");
+            DataRow zrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "COORD_Z");
+            DataRow l_zrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "LITTLE_HOOK_Z");
+            DataRow wgtrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "WEIGHT");
+            DataRow symbolrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "ACTION_SYMBOL");
+            DataRow countrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "HANGE_QUAN");
+            DataRow cNumrow = CraneActionColumns.First(s => s["COLUMN_NAME"].ToString() == "CACHE_NUM");
+
+            time = ParseValue(time, timerow);
+            x = ParseValue(x, xrow);
+            y = ParseValue(y, yrow);
+            l_y = ParseValue(l_y, l_yrow);
+            z = ParseValue(z, zrow);
+            l_z = ParseValue(l_z, l_zrow);
+            wgt = ParseValue(wgt, wgtrow);
+            symbol = ParseValue(symbol, symbolrow);
+            count = ParseValue(count, countrow);
+            cNum = ParseValue(cNum, cNumrow);
+
+            time = ValidateValueRange(timerow, time.ToString())? time : null;
+            x = ValidateValueRange(xrow,x.ToString())?x: null;
+            y = ValidateValueRange(yrow, y.ToString())?y: null;
+            l_y = ValidateValueRange(l_yrow, l_y.ToString())? l_y : null;
+            z = ValidateValueRange(zrow, z.ToString())? z : null;
+            l_z = ValidateValueRange(l_zrow, l_z.ToString())? l_z : null;
+            wgt = ValidateValueRange(wgtrow, wgt.ToString())? wgt : null;
+            symbol = ValidateValueRange(symbolrow, symbol.ToString())? symbol : null;
+            count = ValidateValueRange(countrow, count.ToString())? count : null;
+            cNum = ValidateValueRange(cNumrow, cNum.ToString())? cNum : null;
+
             string guid = Guid.NewGuid().ToString("N");
             string sql = $@"INSERT INTO PUB.CRANE_ACTION_RECORD(ID,CRA_ID,ACCEPT_TIME,OPERATION_TIME,COORD_X,COORD_Y,LIITLT_HOOK_Y,COORD_Z,LITTLE_HOOK_Z,
 WEIGHT,LITTLE_HOOK_WEIGHT,ACTION_SYMBOL,HANGE_QUAN,CACHE_NUM)
@@ -743,7 +877,6 @@ from all_tab_columns where Table_Name='{table}' ";
             throw new ArgumentException("字节数组数量不等于6，不能转化为时间");
         }
         #endregion
-
 
     }
 }

@@ -59,6 +59,8 @@
     <Compile Include="RealObject.cs" />
     <Compile Include="RealObjectManager.cs" />
     <Compile Include="TaskHelper.cs" />
+    <Compile Include="WriteObject.cs" />
+    <Compile Include="WriteObjectManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LIMS.DC.Common\LIMS.DC.Common.csproj">

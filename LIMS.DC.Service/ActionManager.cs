@@ -3,6 +3,7 @@ using LIMS.DC.DAL;
 using LIMS.DC.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace LIMS.DC.Service
             }
         }
 
-        private void LoadConfig(DC_DEVICE device)
+        private void LoadConfig(DC_DEVICE device )
         {
             DC_DATA_CONFIG time = BaseData.Configs.FirstOrDefault(s => s.DEVICE_ID == device.ID && s.NUM == "ACTION_TIME");
             DC_DATA_CONFIG x = BaseData.Configs.FirstOrDefault(s => s.DEVICE_ID == device.ID && s.NUM == "ACTION_X");

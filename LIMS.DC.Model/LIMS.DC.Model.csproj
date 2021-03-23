@@ -45,6 +45,7 @@
     <Compile Include="DC_DEVICE.cs" />
     <Compile Include="DC_REAL_DATA.cs" />
     <Compile Include="DC_SERVER.cs" />
+    <Compile Include="DC_WRITE_DATA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

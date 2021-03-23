@@ -2,13 +2,14 @@
 using LIMS.DC.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LIMS.DC.Service
 {
-    class BaseData
+   public class BaseData
     {
         static BaseData()
         {
@@ -31,5 +32,6 @@ namespace LIMS.DC.Service
         public static List<DC_DEVICE> Devices { get; set; }
 
         public static List<DC_DATA_CONFIG> Configs { get; set; }
+
     }
 }

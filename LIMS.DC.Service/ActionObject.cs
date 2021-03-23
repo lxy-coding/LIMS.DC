@@ -1,4 +1,5 @@
-﻿using LIMS.DC.DAL;
+﻿using LIMS.DC.Common.LOG;
+using LIMS.DC.DAL;
 using LIMS.DC.Model;
 using System;
 using System.Collections.Generic;
@@ -70,9 +71,9 @@ namespace LIMS.DC.Service
         /// </summary>
         public DC_DATA_CONFIG ACTION_READED_NUM { get; set; }
 
-        public List<DataRow> Columns { get; set; }
-
         private bool IsComplete = true;
+
+        SystemLog log = new SystemLog("动作数据");
 
         public async void Request()
         {
@@ -82,6 +83,7 @@ namespace LIMS.DC.Service
                 try
                 {
                     bool res = IsGenerateAction();
+
                     if (res)
                     {
                         Thread.Sleep(1000);
@@ -100,15 +102,6 @@ namespace LIMS.DC.Service
                         count = ACTION_OBJ_COUNT == null ? null : Operator.Read(ACTION_OBJ_COUNT);
                         cNum = ACTION_CACHE_NUM == null ? null : Operator.Read(ACTION_CACHE_NUM);
 
-                        x = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "COORD_X"),x);
-                        y = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "COORD_Y"), y);
-                        l_y = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "LIITLT_HOOK_Y"), l_y);
-                        z = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "COORD_Z"), z);
-                        l_z = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "LITTLE_HOOK_Z"), l_z);
-                        wgt = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "WEIGHT"), wgt);
-                        symbol = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "ACTION_SYMBOL"), symbol);
-                        count = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "HANGE_QUAN"), count);
-                        cNum = ValidateValueRange(Columns.First(s=>s["COLUMN_NAME"].ToString()== "CACHE_NUM"), cNum);
 
                         int result= dC_Service.InsertAction(Cra_ID, time, x, y, l_y, z, l_z, wgt, l_wgt, symbol, count, cNum);
                         if(result==1)
@@ -117,9 +110,9 @@ namespace LIMS.DC.Service
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    log.WriteLog(E_ProcessLogType.Error, "读取动作异常。" + ex.Message+ex.StackTrace);
                 }
                 finally
                 {

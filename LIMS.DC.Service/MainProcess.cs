@@ -1,4 +1,5 @@
-﻿using LIMS.DC.Model;
+﻿using LIMS.DC.Common.LOG;
+using LIMS.DC.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,18 @@ namespace LIMS.DC.Service
             DAManager daManager = new DAManager();
 
             //连接不成功，延迟10s后
-            while( !daManager.Request())
+            while ( !daManager.Request())
             {
                 Thread.Sleep(10000);
             }
 
             TaskHelper.Init();
 
+
             //实时数据
             RealObjectManager realObjectManager = new RealObjectManager();
             realObjectManager.Request();
+
 
             //天车动作
             ActionManager actionManager = new ActionManager();
@@ -35,6 +38,10 @@ namespace LIMS.DC.Service
             CalManager calManager = new CalManager();
             calManager.Operator = daManager;
             calManager.Request();
+
+            WriteObjectManager wManager = new WriteObjectManager();
+            wManager.Operator = daManager;
+            wManager.Request();
         }
     }
 }
