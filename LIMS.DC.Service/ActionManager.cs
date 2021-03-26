@@ -32,7 +32,7 @@ namespace LIMS.DC.Service
             }
             catch (Exception ex)
             {
-                log.WriteLog(E_ProcessLogType.Error, "加载动作配置异常。" + ex.Message);
+                log.WriteLog(E_ProcessLogType.Error, $"加载动作配置异常。" + ex.Message);
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace LIMS.DC.Service
                     }
                     catch (Exception ex)
                     {
-                        log.WriteLog(E_ProcessLogType.Error, "读取动作异常。" + ex.Message);
+                        log.WriteLog(E_ProcessLogType.Error, $"读取动作异常。cra:{obj.Cra_ID}。" + ex.Message);
                     }
                 }
             });

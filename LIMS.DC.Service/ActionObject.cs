@@ -112,7 +112,7 @@ namespace LIMS.DC.Service
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLog(E_ProcessLogType.Error, "读取动作异常。" + ex.Message+ex.StackTrace);
+                    log.WriteLog(E_ProcessLogType.Error, $"读取动作异常。cra:{Cra_ID}。" + ex.Message+ex.StackTrace);
                 }
                 finally
                 {
